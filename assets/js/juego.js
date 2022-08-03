@@ -17,6 +17,7 @@ let puntosComputador = 0
 // string = #id: seleccionar por id
 // string = .class: seleccionar por clase
 const btnDetener = document.querySelector('#btnDetener')
+const btnNuevo = document.querySelector('#btnNuevo')
 const btnPedir = document.querySelector('#btnPedir')
 const divCartasJugador = document.querySelector('#jugador-cartas')
 const divCartasComputador = document.querySelector('#computador-cartas')
@@ -24,6 +25,7 @@ const puntosHTML = document.querySelectorAll('small')
 
 // Crear una baraja de cartas en orden aleatorio
 const crearDeck = () => {
+  deck = []
   for (let i = 2; i <= 10; i++) {
     for (const tipo of tipos) {
       deck.push(i + tipo)
@@ -77,6 +79,19 @@ const turnoComputador = (puntosMinimos) => {
       break
     }
   } while (puntosComputador < puntosMinimos && puntosMinimos <= 21)
+
+  // El setTimeout es para que se alcance a ejecutar todo el código antes de que se ejecute la alerta
+  setTimeout(() => {
+    if (puntosComputador === puntosMinimos) {
+      alert('Empate')
+    } else if (puntosMinimos > 21) {
+      alert('Perdiste')
+    } else if (puntosComputador > 21) {
+      alert('Ganaste')
+    } else {
+      alert('Perdiste')
+    }
+  }, 100)
 }
 
 // Eventos
@@ -106,4 +121,17 @@ btnDetener.addEventListener('click', () => {
   btnPedir.disabled = true
   btnDetener.disabled = true
   turnoComputador(puntosJugador)
+})
+
+btnNuevo.addEventListener('click', () => {
+  console.clear()
+  puntosJugador = 0
+  puntosComputador = 0
+  puntosHTML[0].innerText = puntosJugador
+  puntosHTML[1].innerText = puntosComputador
+  divCartasJugador.innerHTML = ''
+  divCartasComputador.innerHTML = ''
+  btnPedir.disabled = false
+  btnDetener.disabled = false
+  crearDeck()
 })
